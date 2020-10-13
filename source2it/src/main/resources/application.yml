@@ -1,0 +1,30 @@
+  deployment.yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: client-service
+  spec:
+    selector:
+      matchLabels:
+        app: client-service
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          app: client-service
+      spec:
+        containers:
+          - name: client-service
+            image: gcr.io/source2it/source2it
+            ports:
+              - containerPort: 8080
+            livenessProbe:
+              initialDelaySeconds: 20
+              httpGet:
+                port: 8080
+                path: /actuator/health
+            readinessProbe:
+              initialDelaySeconds: 30
+              httpGet:
+                port: 8080
+                path: /actuator/health
